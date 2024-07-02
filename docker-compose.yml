@@ -1,0 +1,41 @@
+version: '1'
+services:
+  mysql-auth:
+    image: mysql:8
+    container_name: mysql-auth
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: authdb
+      MYSQL_USER: authuser
+      MYSQL_PASSWORD: authpassword
+    ports:
+      - "3307:3306" # Avoiding port conflicts with other MySQL instances
+    networks:
+      - winton-network
+
+  winton-auth:
+    build: ./winton-auth
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-auth:3306/authdb
+      SPRING_DATASOURCE_USERNAME: authuser
+      SPRING_DATASOURCE_PASSWORD: authpassword
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+    depends_on:
+      - mysql-auth
+      - eureka
+    networks:
+      - winton-network
+
+  eureka:
+    image: netflix/eureka:latest
+    ports:
+      - "8761:8761"
+    networks:
+      - winton-network
+
+networks:
+  winton-network:
+    driver: bridge
