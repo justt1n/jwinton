@@ -1,0 +1,15 @@
+server:
+    port: 8080
+    servlet:
+        context-path: /auth
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/jwinton
+    username: root
+    password: hihihihaha
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
