@@ -16,6 +16,11 @@ public class UserService {
 
     public UserEntity createRequest(UserCreationRequest request) {
         UserEntity newUserEntity = new UserEntity();
+
+        if (userRepository.existsByUsername(request.getUsername())) {
+            throw new RuntimeException("Username already exists");
+        }
+
         newUserEntity.setUsername(request.getUsername());
         newUserEntity.setPassword(request.getPassword());
         newUserEntity.setFirstName(request.getFirstName());
@@ -30,10 +35,10 @@ public class UserService {
     }
 
     public UserEntity getUser(String userId) {
-        return userRepository.findById(userId).orElse(null);
+        return userRepository.findById(userId).orElseThrow(()-> new RuntimeException("User not found"));
     }
 
-    public UserEntity updateUser(String userId ,UserUpdateRequest request) {
+    public UserEntity updateUser(String userId, UserUpdateRequest request) {
         UserEntity userEntity = userRepository.findById(userId).orElse(null);
         if (userEntity == null) {
             return null;
@@ -44,5 +49,10 @@ public class UserService {
         userEntity.setEmail(request.getEmail());
         userEntity.setDob(request.getDob());
         return userRepository.save(userEntity);
+    }
+
+    public String deleteUser(String userId) {
+        userRepository.deleteById(userId);
+        return "User deleted";
     }
 }
