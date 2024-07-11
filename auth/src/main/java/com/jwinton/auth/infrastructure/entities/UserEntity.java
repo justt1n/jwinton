@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 
 import java.time.LocalDate;
 
-@Entity
+@Entity(name = "users")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
