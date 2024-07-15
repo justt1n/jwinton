@@ -2,8 +2,14 @@ package com.jwinton.auth.presentation.dto.request;
 
 import java.time.LocalDate;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
+
 public class UserCreationRequest {
+    @Valid
+    @Size(min = 8, message = "Username must be at least 8 characters long")
     private String username;
+    @Size(min = 4, message = "Password must be at least 4 characters long")
     private String password;
     private String firstName;
     private String lastName;

@@ -4,6 +4,8 @@ import com.jwinton.auth.application.services.UserService;
 import com.jwinton.auth.infrastructure.entities.UserEntity;
 import com.jwinton.auth.presentation.dto.request.UserCreationRequest;
 import com.jwinton.auth.presentation.dto.request.UserUpdateRequest;
+import jakarta.validation.Valid;
+import jakarta.validation.executable.ValidateOnExecution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +17,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping()
-    public UserEntity createUser(@RequestBody UserCreationRequest request) {
+    @PostMapping
+    public UserEntity createUser(@RequestBody @Valid UserCreationRequest request) {
         return userService.createRequest(request);
     }
 
