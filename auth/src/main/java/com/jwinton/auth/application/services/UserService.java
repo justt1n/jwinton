@@ -1,5 +1,7 @@
 package com.jwinton.auth.application.services;
 
+import com.jwinton.auth.application.constants.ErrorCode;
+import com.jwinton.auth.application.exceptions.AppException;
 import com.jwinton.auth.infrastructure.entities.UserEntity;
 import com.jwinton.auth.presentation.dto.request.UserCreationRequest;
 import com.jwinton.auth.presentation.dto.request.UserUpdateRequest;
@@ -18,7 +20,7 @@ public class UserService {
         UserEntity newUserEntity = new UserEntity();
 
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username already exists");
+            throw new AppException(ErrorCode.USER_EXISTS);
         }
 
         newUserEntity.setUsername(request.getUsername());
