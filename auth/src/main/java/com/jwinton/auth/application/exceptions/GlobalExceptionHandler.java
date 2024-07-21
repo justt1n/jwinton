@@ -1,6 +1,5 @@
 package com.jwinton.auth.application.exceptions;
 
-import com.google.protobuf.Api;
 import com.jwinton.auth.application.constants.ErrorCode;
 import com.jwinton.auth.presentation.dto.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
@@ -25,16 +24,21 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
-        List<ErrorCode> errors = e.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(error -> error.getDefaultMessage())
-                .map(error -> ErrorCode.valueOf(error))
-                .toList();
+        ApiResponse response = null;
+        try {
+            List<ErrorCode> errors = e.getBindingResult()
+                    .getFieldErrors()
+                    .stream()
+                    .map(error -> error.getDefaultMessage())
+                    .map(error -> ErrorCode.valueOf(error))
+                    .toList();
 
-        ApiResponse response = new ApiResponse();
-        response.setCode((int) errors.stream().map(error -> error.getCode()).count());
-        response.setMessage(errors.stream().map(error -> error.getMessage()).collect(Collectors.joining(",\n")));
+            response = new ApiResponse();
+            response.setCode(errors.get(0).getCode());
+            response.setMessage(errors.stream().map(error -> error.getMessage()).collect(Collectors.joining(",\n")));
+        } catch (IllegalArgumentException ex) {
+
+        }
         return ResponseEntity.badRequest().body(response);
     }
 

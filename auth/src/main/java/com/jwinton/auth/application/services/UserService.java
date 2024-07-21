@@ -17,12 +17,12 @@ public class UserService {
     private UserRepository userRepository;
 
     public UserEntity createRequest(UserCreationRequest request) {
-        UserEntity newUserEntity = new UserEntity();
+
 
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTS);
         }
-
+        UserEntity newUserEntity = new UserEntity();
         newUserEntity.setUsername(request.getUsername());
         newUserEntity.setPassword(request.getPassword());
         newUserEntity.setFirstName(request.getFirstName());
