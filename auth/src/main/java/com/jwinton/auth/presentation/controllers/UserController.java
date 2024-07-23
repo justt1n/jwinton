@@ -1,5 +1,6 @@
 package com.jwinton.auth.presentation.controllers;
 
+import com.google.protobuf.Api;
 import com.jwinton.auth.application.services.UserService;
 import com.jwinton.auth.infrastructure.entities.UserEntity;
 import com.jwinton.auth.infrastructure.repositories.UserRepository;
