@@ -3,6 +3,7 @@ package com.jwinton.auth.application.services;
 import com.jwinton.auth.application.constants.ErrorCode;
 import com.jwinton.auth.application.exceptions.AppException;
 import com.jwinton.auth.infrastructure.entities.UserEntity;
+import com.jwinton.auth.mapper.UserMapper;
 import com.jwinton.auth.presentation.dto.request.UserCreationRequest;
 import com.jwinton.auth.presentation.dto.request.UserUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,19 +17,15 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserMapper userMapper;
     public UserEntity createRequest(UserCreationRequest request) {
-
 
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTS);
         }
-        UserEntity newUserEntity = new UserEntity();
-        newUserEntity.setUsername(request.getUsername());
-        newUserEntity.setPassword(request.getPassword());
-        newUserEntity.setFirstName(request.getFirstName());
-        newUserEntity.setLastName(request.getLastName());
-        newUserEntity.setEmail(request.getEmail());
-        newUserEntity.setDob(request.getDob());
+        UserEntity newUserEntity = userMapper.toUserEntity(request);
+
         return userRepository.save(newUserEntity);
     }
 
