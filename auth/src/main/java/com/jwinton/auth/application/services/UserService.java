@@ -19,6 +19,7 @@ public class UserService {
 
     @Autowired
     private UserMapper userMapper;
+
     public UserEntity createRequest(UserCreationRequest request) {
 
         if (userRepository.existsByUsername(request.getUsername())) {
@@ -42,11 +43,9 @@ public class UserService {
         if (userEntity == null) {
             return null;
         }
-        userEntity.setPassword(request.getPassword());
-        userEntity.setFirstName(request.getFirstName());
-        userEntity.setLastName(request.getLastName());
-        userEntity.setEmail(request.getEmail());
-        userEntity.setDob(request.getDob());
+
+        userEntity = userMapper.updateUserEntity(userEntity, request);
+
         return userRepository.save(userEntity);
     }
 

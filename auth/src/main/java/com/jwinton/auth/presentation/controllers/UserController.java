@@ -1,7 +1,9 @@
 package com.jwinton.auth.presentation.controllers;
 
+import com.google.protobuf.Api;
 import com.jwinton.auth.application.services.UserService;
 import com.jwinton.auth.infrastructure.entities.UserEntity;
+import com.jwinton.auth.infrastructure.repositories.UserRepository;
 import com.jwinton.auth.presentation.dto.request.UserCreationRequest;
 import com.jwinton.auth.presentation.dto.request.UserUpdateRequest;
 import com.jwinton.auth.presentation.dto.response.ApiResponse;
@@ -29,22 +31,42 @@ public class UserController {
     }
 
     @GetMapping()
-    public List<UserEntity> getUsers() {
-        return userService.getUsers();
+    public ApiResponse<List<UserEntity>> getUsers() {
+        ApiResponse<List<UserEntity>> response = new ApiResponse<>();
+
+        response.setMessage("Users retrieved");
+        response.setResult(userService.getUsers());
+
+        return response;
     }
 
     @GetMapping("/{userId}")
-    public UserEntity getUser(@PathVariable String userId) {
-        return userService.getUser(userId);
+    public ApiResponse<UserEntity> getUser(@PathVariable String userId) {
+        ApiResponse<UserEntity> response = new ApiResponse<>();
+
+        response.setMessage("User retrieved");
+        response.setResult(userService.getUser(userId));
+
+        return response;
     }
 
     @PutMapping("/{userId}")
-    public UserEntity updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest request) {
-        return userService.updateUser(userId, request);
+    public ApiResponse<UserEntity> updateUser(@PathVariable("userId") String userId, @RequestBody UserUpdateRequest request) {
+        ApiResponse<UserEntity> response = new ApiResponse<>();
+
+        response.setMessage("User updated");
+        response.setResult(userService.updateUser(userId, request));
+
+        return response;
     }
 
     @DeleteMapping("/{userId}")
-    public String deleteUser(@PathVariable String userId) {
-        return userService.deleteUser(userId);
+    public ApiResponse<String> deleteUser(@PathVariable String userId) {
+        ApiResponse<String> response = new ApiResponse<>();
+
+        response.setMessage("User deleted");
+        response.setResult(userService.deleteUser(userId));
+
+        return response;
     }
 }
