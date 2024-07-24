@@ -1,14 +1,11 @@
 package com.jwinton.auth.presentation.controllers;
 
-import com.google.protobuf.Api;
 import com.jwinton.auth.application.services.UserService;
 import com.jwinton.auth.infrastructure.entities.UserEntity;
-import com.jwinton.auth.infrastructure.repositories.UserRepository;
 import com.jwinton.auth.presentation.dto.request.UserCreationRequest;
 import com.jwinton.auth.presentation.dto.request.UserUpdateRequest;
 import com.jwinton.auth.presentation.dto.response.ApiResponse;
 import jakarta.validation.Valid;
-import jakarta.validation.executable.ValidateOnExecution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +32,7 @@ public class UserController {
         ApiResponse<List<UserEntity>> response = new ApiResponse<>();
 
         response.setMessage("Users retrieved");
+        response.setTotal(userService.getUsers().size());
         response.setResult(userService.getUsers());
 
         return response;
